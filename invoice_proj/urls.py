@@ -21,3 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
  #   path('',hello_world)
 ]
+
+admin.site.site_header = 'Invoice admin system'
+admin.site.index_title = 'Managment'
