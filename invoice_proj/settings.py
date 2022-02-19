@@ -41,6 +41,9 @@ INSTALLED_APPS = [
     'receivers',
     'invoices',
     'positions',
+
+    # 3rd party
+    'import_export',
 ]
 
 MIDDLEWARE = [
