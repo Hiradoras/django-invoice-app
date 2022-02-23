@@ -8,4 +8,8 @@ def hello_world(request):
     print(obj.__dict__)
     print("******")
     print(qs.query)
-    return render(request, 'home.html',{'obj_' : obj})
+    context = {
+        'obj_' : obj, 
+        'qs' : qs # <- object_list
+        }
+    return render(request, 'home.html', context)

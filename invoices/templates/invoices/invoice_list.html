@@ -1,0 +1,18 @@
+{% extends 'base.html' %} <!-- Inherits from base.html -->
+
+{% block title %}
+home
+{% endblock title %}
+
+{% block content %}
+
+{% for obj in object_list %}
+
+<b>{{obj.number}}</b>
+
+{% endfor %}
+
+{% endblock content %}
+
+
+
