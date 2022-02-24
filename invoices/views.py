@@ -7,7 +7,7 @@ from .forms import InvoiceForm
 class InvoiceListView(ListView):
     model = Invoice
     template_name = "invoices/main.html" # default invoice_list.html
-    # paginate_by
+    paginate_by = 2
     context_object_name = 'qs'
 
     def get_queryset(self):
