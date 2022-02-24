@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
-from django.urls import reverse_lazy
-from django.views.generic import ListView, FormView
+from django.urls import reverse_lazy, reverse
+from django.views.generic import ListView, FormView, TemplateView
 from .models import Invoice
 from profiles.models import Profile
 from .forms import InvoiceForm
@@ -21,12 +21,20 @@ class InvoiceListView(ListView):
 class InvoiceFromView(FormView):
     form_class = InvoiceForm
     template_name = 'invoices/create.html'
-    success_url = reverse_lazy('invoices:main')
+    #success_url = reverse_lazy('invoices:main')
+    i_instance = None
+
+    def get_success_url(self):
+        return reverse('invoices:simple-template', kwargs={'pk': self.i_instance.pk})
 
     def form_valid(self, form):
         profile = Profile.objects.get(user=self.request.user)
         instance = form.save(commit=False)
         instance.profile = profile
         form.save()
-        print("saved")
+        self.i_instance = instance
         return super().form_valid(form)
+
+
+class SimpleTemplateView(TemplateView):
+    template_name = 'invoices/simple_template.html'
