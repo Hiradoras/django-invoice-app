@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
-from django.views.generic import ListView, FormView, TemplateView
+from django.views.generic import ListView, FormView, TemplateView, DetailView
 from .models import Invoice
 from profiles.models import Profile
 from .forms import InvoiceForm
@@ -35,6 +35,12 @@ class InvoiceFromView(FormView):
         self.i_instance = instance
         return super().form_valid(form)
 
-
-class SimpleTemplateView(TemplateView):
+class SimpleTemplateView(DetailView):
+    model = Invoice
     template_name = 'invoices/simple_template.html'
+
+
+
+# class SimpleTemplateView(TemplateView):
+#     template_name = 'invoices/simple_template.html'
+
