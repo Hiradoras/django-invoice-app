@@ -1,9 +1,12 @@
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
-from django.views.generic import ListView, FormView, TemplateView, DetailView
+from django.views.generic import ListView, FormView, TemplateView, DetailView, UpdateView
 from .models import Invoice
 from profiles.models import Profile
 from .forms import InvoiceForm
+from django.contrib import messages
+
+
 class InvoiceListView(ListView):
     model = Invoice
     template_name = "invoices/main.html" # default invoice_list.html
@@ -39,8 +42,16 @@ class SimpleTemplateView(DetailView):
     model = Invoice
     template_name = 'invoices/simple_template.html'
 
-
-
 # class SimpleTemplateView(TemplateView):
 #     template_name = 'invoices/simple_template.html'
 
+class InvoiceUpdateView(UpdateView):
+    model = Invoice
+    template_name = 'invoices/update.html'
+    form_class = InvoiceForm
+    success_url = reverse_lazy('invoices:main')
+
+    def form_valid(self, form):
+        instance = form.save()
+        messages.info(self.request, f'Successfuly updated invoice - {instance.number}')
+        return super().form_valid(form)

@@ -6,6 +6,16 @@ home
 
 {% block content %}
 
+{% if messages %}
+  {% for message in messages %}
+    {% if message.tags == "info" %}
+      <div class = "alert alert-primary mt-2">
+        {{message}}
+      </div>
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
 {% if qs %}
     {% for obj in qs %}
         <div class="card mb-2" style="width:100%">
@@ -19,7 +29,7 @@ home
                 </div>
                 <div class = "m-2">
                     <a href="{% url 'invoices:simple-template' obj.pk %}" class="btn btn-primary"> details </a>
-                    <a href="#" class="btn btn-info"> update </a>
+                    <a href="{% url 'invoices:update' obj.pk %}" class="btn btn-info"> update </a>
                 </div>
             </div>
         </div>
