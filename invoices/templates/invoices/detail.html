@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}
+detail page
+{% endblock title %}
+
+{% block content %}
+
+{% if messages %}
+  {% for message in messages %}
+    {% if message.tags == "info" %}
+      <div class = "alert alert-primary mt-2">
+        {{message}}
+      </div>
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+<div class="mt-3">
+    <h5>Receiver: {{obj.receiver.name}}</h5>
+    <hr>
+    <h3>Positions</h3>
+    {% if qs %}
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">title</th>
+            <th scope="col">describe</th>
+            <th scope="col">amount</th>
+            <th scope="col">delete</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for item in qs %}
+                <tr style="vertical-align:middle;">
+                    <th scope="row">{{forloop.counter}}</th>
+                    <td>{{item.title}}</td>
+                    <td>{{item.description}}</td>
+                    <td>${{item.amonunt}}</td>
+                    {% if not obj.closed %}
+                        <td>
+                            <a href="#" class="btn btn-danger">X</a>
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %} 
+        </tbody>
+      </table>
+      <div class="mt-2 text-end">
+          <h2>Total amount: ${{obj.total_amount}}</h5>
+
+      </div>
+
+    {% else %}
+        <h5>No positions added . . . </h5>
+    {% endif %}
+</div>
+
+{% endblock content %}

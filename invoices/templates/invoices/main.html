@@ -28,7 +28,7 @@ home
                     amount: ${{obj.total_amount}}
                 </div>
                 <div class = "m-2">
-                    <a href="{% url 'invoices:simple-template' obj.pk %}" class="btn btn-primary"> details </a>
+                    <a href="{% url 'invoices:detail' obj.pk %}" class="btn btn-primary"> details </a>
                     <a href="{% url 'invoices:update' obj.pk %}" class="btn btn-info"> update </a>
                 </div>
             </div>

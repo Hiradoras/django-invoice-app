@@ -5,6 +5,7 @@ from .models import Invoice
 from profiles.models import Profile
 from .forms import InvoiceForm
 from django.contrib import messages
+from positions.forms import PositionForm
 
 
 class InvoiceListView(ListView):
@@ -28,7 +29,7 @@ class InvoiceFromView(FormView):
     i_instance = None
 
     def get_success_url(self):
-        return reverse('invoices:simple-template', kwargs={'pk': self.i_instance.pk})
+        return reverse('invoices:detail', kwargs={'pk': self.i_instance.pk})
 
     def form_valid(self, form):
         profile = Profile.objects.get(user=self.request.user)
@@ -44,6 +45,30 @@ class SimpleTemplateView(DetailView):
 
 # class SimpleTemplateView(TemplateView):
 #     template_name = 'invoices/simple_template.html'
+
+class AddPositionsFormView(FormView):
+    form_class  = PositionForm
+    template_name = "invoices/detail.html"
+
+    def get_success_url(self) -> str:
+        return self.request.path
+
+    def form_valid(self, form):
+        invoice_pk = self.kwargs.get('pk')
+        invoice_obj = Invoice.objects.get(pk=invoice_pk)
+        instance = form.save(commit=False)
+        instance.invoice = invoice_obj
+        form.save()
+        messages.info(self.request, f"Succesfully added position - {instance.title}")
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        invoice_obj = Invoice.objects.get(pk=self.kwargs.get('pk'))
+        qs = invoice_obj.positions
+        context['obj'] = invoice_obj
+        context['qs'] = qs
+        return context
 
 class InvoiceUpdateView(UpdateView):
     model = Invoice
