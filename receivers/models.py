@@ -1,3 +1,4 @@
+from email.policy import default
 from django.db import models
 from django.forms import CharField
 from datetime import datetime
@@ -10,6 +11,8 @@ class Receiver(models.Model):
     address = models.TextField()
     website = models.URLField(blank=True)
     created = models.DateTimeField(default=datetime.now)
+
+    logo = models.ImageField(default="images/no_photo.png")
 
     # add later
     # logo

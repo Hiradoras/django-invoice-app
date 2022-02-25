@@ -1,3 +1,4 @@
+from email.policy import default
 from django.db import models
 from django.contrib.auth.models import User
 from django.forms import ValidationError
@@ -15,6 +16,9 @@ class Profile(models.Model):
     company_info = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+
+    avatar = models.ImageField(default="images/avatar.png")
+    company_logo = models.ImageField(default="images/no_photo.png")
 
     #add later
     #avatar = 
