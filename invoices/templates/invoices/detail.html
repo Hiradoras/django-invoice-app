@@ -1,10 +1,65 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
 {% block title %}
 detail page
 {% endblock title %}
 
 {% block content %}
+
+
+<!-- add Positions Modal -->
+<div class="modal fade" id="addPositionsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add positions</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="" method="POST">
+          {% csrf_token %}
+          {{form|crispy}}
+          <button type="submit" class="btn btn-primary mt-3">save</button>
+          
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- close invoice Modal -->
+<div class="modal fade" id="closeInvoiceModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Warning</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div>
+  {% if not obj.closed %}
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPositionsModal">
+      Add positions
+    </button>
+    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#closeInvoiceModal">
+      Close
+    </button>
+  {% else %}
+    <a href="#" class = "btn btn-danger">pdf</a>
+  {% endif %}
+</div>
+
 
 {% if messages %}
   {% for message in messages %}
@@ -37,7 +92,7 @@ detail page
                     <th scope="row">{{forloop.counter}}</th>
                     <td>{{item.title}}</td>
                     <td>{{item.description}}</td>
-                    <td>${{item.amonunt}}</td>
+                    <td>${{item.amount}}</td>
                     {% if not obj.closed %}
                         <td>
                             <a href="#" class="btn btn-danger">X</a>
