@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
-from django.views.generic import ListView, FormView, TemplateView, DetailView, UpdateView
+from django.views.generic import ListView, FormView, TemplateView, DetailView, UpdateView, RedirectView
 from .models import Invoice
 from profiles.models import Profile
 from .forms import InvoiceForm
@@ -80,3 +80,14 @@ class InvoiceUpdateView(UpdateView):
         instance = form.save()
         messages.info(self.request, f'Successfuly updated invoice - {instance.number}')
         return super().form_valid(form)
+    
+class CloseInvoiceView(RedirectView):
+    
+    pattern_name = "invoices:detail"
+
+    def get_redirect_url(self, *args, **kwargs):
+        pk = self.kwargs.get('pk')
+        obj = Invoice.objects.get(pk=pk)
+        obj.closed = True
+        obj.save()
+        return super().get_redirect_url(*args,**kwargs)

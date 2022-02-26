@@ -37,11 +37,10 @@ detail page
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        ...
+        Are you sure you want to close the invoice
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <a href="{% url 'invoices:close' obj.pk %}" class="btn btn-secondary" >Close</a>
       </div>
     </div>
   </div>
@@ -93,11 +92,13 @@ detail page
                     <td>{{item.title}}</td>
                     <td>{{item.description}}</td>
                     <td>${{item.amount}}</td>
-                    {% if not obj.closed %}
                         <td>
-                            <a href="#" class="btn btn-danger">X</a>
-                        </td>
-                    {% endif %}
+                            {% if not obj.closed %}                    
+                              <a href="#" class="btn btn-danger">X</a>
+                            {% else %}
+                              closed
+                            {% endif %}
+                        </td>                   
                 </tr>
             {% endfor %} 
         </tbody>
