@@ -1,11 +1,13 @@
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
-from django.views.generic import ListView, FormView, TemplateView, DetailView, UpdateView, RedirectView
+from django.views.generic import ListView, FormView, TemplateView, DetailView, UpdateView, RedirectView, DeleteView
 from .models import Invoice
 from profiles.models import Profile
 from .forms import InvoiceForm
 from django.contrib import messages
 from positions.forms import PositionForm
+from positions.models import Position
+from .mixins import InvoiceNotClosedMixin
 
 
 class InvoiceListView(ListView):
@@ -70,7 +72,7 @@ class AddPositionsFormView(FormView):
         context['qs'] = qs
         return context
 
-class InvoiceUpdateView(UpdateView):
+class InvoiceUpdateView(InvoiceNotClosedMixin, UpdateView):
     model = Invoice
     template_name = 'invoices/update.html'
     form_class = InvoiceForm
@@ -91,3 +93,20 @@ class CloseInvoiceView(RedirectView):
         obj.closed = True
         obj.save()
         return super().get_redirect_url(*args,**kwargs)
+
+
+class InvoicePositionDeleteView(InvoiceNotClosedMixin, DeleteView):
+    model = Position
+    template_name = "invoices/position_confirm_delete.html"
+
+    # /<pk>/delete/<position_pk>/
+    def get_object(self):
+        pk = self.kwargs.get('position_pk')
+        obj = Position.objects.get(pk=pk)
+        return obj
+    
+    def get_success_url(self):
+        messages.info(self.request,f'Deleted position - {self.object.title}')
+        return reverse('invoices:detail', kwargs={"pk":self.object.invoice.id})
+
+

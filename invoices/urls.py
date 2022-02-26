@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import CloseInvoiceView, InvoiceFromView, InvoiceListView, InvoiceForm, SimpleTemplateView, InvoiceUpdateView, AddPositionsFormView, RedirectView
+from .views import CloseInvoiceView, InvoiceFromView, InvoiceListView, SimpleTemplateView, InvoiceUpdateView, AddPositionsFormView, CloseInvoiceView, InvoicePositionDeleteView
 
 app_name = 'invoices'
 
@@ -10,5 +10,7 @@ urlpatterns = [
     path('<pk>/', AddPositionsFormView.as_view(),name='detail'),
     path('<pk>/update', CloseInvoiceView.as_view(),name='close'),
     path('<pk>/update', InvoiceUpdateView.as_view(),name='update'),
+    path('<pk>/delete/<int:position_pk>/', InvoicePositionDeleteView.as_view(),name='position-delete'),
+    
     
 ]

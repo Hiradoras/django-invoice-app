@@ -94,7 +94,8 @@ detail page
                     <td>${{item.amount}}</td>
                         <td>
                             {% if not obj.closed %}                    
-                              <a href="#" class="btn btn-danger">X</a>
+                                <!--You need to add item.pk because you are in for loop. and it's for position-->
+                              <a href="{% url 'invoices:position-delete' obj.pk item.pk %}" class="btn btn-danger">X</a>
                             {% else %}
                               closed
                             {% endif %}

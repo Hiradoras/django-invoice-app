@@ -29,7 +29,10 @@ home
                 </div>
                 <div class = "m-2">
                     <a href="{% url 'invoices:detail' obj.pk %}" class="btn btn-primary"> details </a>
-                    <a href="{% url 'invoices:update' obj.pk %}" class="btn btn-info"> update </a>
+
+                    {% if not obj.closed %}
+                      <a href="{% url 'invoices:update' obj.pk %}" class="btn btn-info"> update </a>
+                    {% endif %}
                 </div>
             </div>
         </div>
