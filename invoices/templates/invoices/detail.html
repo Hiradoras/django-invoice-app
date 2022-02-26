@@ -55,7 +55,7 @@ detail page
       Close
     </button>
   {% else %}
-    <a href="#" class = "btn btn-danger">pdf</a>
+    <a href="{% url 'invoices:pdf' obj.pk %}" class = "btn btn-danger">pdf</a>
   {% endif %}
 </div>
 
